@@ -1,0 +1,15 @@
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\bin\Debug\SharpList.exe
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\bin\Debug\SharpList.pdb
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\MainWindow.baml
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\App.g.cs
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\SharpList_MarkupCompile.cache
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\SharpList.g.resources
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\SharpList.Properties.Resources.resources
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\SharpList.exe
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\SharpList.pdb
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\DialogBox.baml
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\DialogBox.g.cs
