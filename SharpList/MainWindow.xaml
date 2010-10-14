@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="SharpList" Height="508" Width="677"
+        WindowStartupLocation="CenterScreen"
         Icon="/SharpList;component/Img/icon.png" ResizeMode="NoResize"
         Closing="Window_Closing">
     <Window.Background>

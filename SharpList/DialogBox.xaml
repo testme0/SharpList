@@ -1,7 +1,9 @@
 ﻿<Window x:Class="SharpList.DialogBox"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="New Item" Height="148" Width="330" Icon="/SharpList;component/Img/icon.png" ResizeMode="NoResize">
+        Title="New Item" Height="148" Width="330"
+        WindowStartupLocation="CenterScreen"
+        Icon="/SharpList;component/Img/icon.png" ResizeMode="NoResize">
     <Window.Background>
         <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
             <GradientStop Color="#FF470505" Offset="0" />

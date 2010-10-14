@@ -11,10 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
-using System.IO;
-using System.Globalization;
 using System.ComponentModel;
+using Business;
 
 namespace SharpList
 {
@@ -23,96 +21,35 @@ namespace SharpList
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string path = "C:\\SharpList\\data.xml";
-        private List<List> sharpLists;
-        private List currentSharpList;
-        private XmlDocument data;
+        private readonly SharpListManager _manager;
+
+        private Business.SharpList currentSharpList;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            GetAllSharpLists();
-        }
-
-        public void GetAllSharpLists()
-        {
-            FileStream fileStream = null;
-            data = new XmlDocument();
-
-            try
-            {
-                fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                data.Load(fileStream);
-            }
-            catch (Exception e)
-            {
-                System.IO.Directory.CreateDirectory("C:\\SharpList");
-
-                XmlDeclaration xmlDeclaration = data.CreateXmlDeclaration("1.0", "utf-8", null);
-
-                // Create the root element
-                XmlElement rootNode = data.CreateElement("Lists");
-                data.InsertBefore(xmlDeclaration, data.DocumentElement);
-                data.AppendChild(rootNode);
-                fileStream = File.Create(path);
-                data.Save(fileStream);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Flush();
-                    fileStream.Close();
-                    XmlNodeList xmlSharpLists = data.GetElementsByTagName("SharpList");
-                    sharpLists = new List<List>();
-                    for (int i = 0; i < xmlSharpLists.Count; i++)
-                    {
-                        XmlNode xmlSharpList = xmlSharpLists[i];
-
-                        List sharpList = new List(xmlSharpList.Attributes[0].Value);
-
-                        IFormatProvider culture = new CultureInfo("fr-FR", true);
-                        sharpList.Date = DateTime.Parse(xmlSharpList.Attributes[1].Value,
-                                           culture,
-                                           DateTimeStyles.NoCurrentDateDefault);
-
-                        XmlNodeList xmlItems = xmlSharpList.ChildNodes;
-
-                        for (int j = 0; j < xmlItems.Count; j++)
-                        {
-                            XmlNode xmlItem = xmlItems[j];
-
-                            Item item = new Item(xmlItem.Attributes[0].Value);
-                            item.Checked = Boolean.Parse(xmlItem.InnerText);
-
-                            sharpList.Items.Add(item);
-                        }
-                        sharpLists.Add(sharpList);
-                    }
-                    sharpListList.ItemsSource = sharpLists;
-                }
-            }
+            _manager = new SharpListManager();
+            sharpListList.ItemsSource = _manager.GetSharpLists();
         }
 
         private void newButton_Click(object sender, RoutedEventArgs e)
         {
-            List newSharpList = new List("New");
-            sharpLists.Add(newSharpList);
+            _manager.CreateSharpList();
 
             sharpListList.ItemsSource = null;
-            sharpListList.ItemsSource = sharpLists;
-            sharpListList.SelectedIndex = sharpLists.IndexOf(newSharpList);
+            sharpListList.ItemsSource = _manager.GetSharpLists();
+            sharpListList.SelectedIndex = _manager.GetSharpLists().Count - 1;
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (currentSharpList != null)
             {
-                sharpLists.Remove(currentSharpList);
+                _manager.DeleteSharpList(currentSharpList);
 
                 sharpListList.ItemsSource = null;
-                sharpListList.ItemsSource = sharpLists;
+                sharpListList.ItemsSource = _manager.GetSharpLists();
                 itemsList.ItemsSource = null;
                 nameTextBox.Text = "";
             }
@@ -120,7 +57,7 @@ namespace SharpList
 
         private void sharpListList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            currentSharpList = ((sender as ListBox).SelectedItem as List);
+            currentSharpList = ((sender as ListBox).SelectedItem as Business.SharpList);
             if (currentSharpList != null)
             {
                 nameTextBox.Text = currentSharpList.Name;
@@ -130,10 +67,11 @@ namespace SharpList
 
         private void check_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Item item = (sender as Image).DataContext as Item;
+            Business.SharpItem item = (sender as Image).DataContext as Business.SharpItem;
             if (item != null)
             {
                 item.Checked = !item.Checked;
+
                 itemsList.ItemsSource = null;
                 itemsList.ItemsSource = currentSharpList.Items;
             }
@@ -141,71 +79,27 @@ namespace SharpList
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (nameTextBox.Text.Length < 31)
+            if (nameTextBox.Text.Length > 0 && nameTextBox.Text.Length < 31)
             {
                 currentSharpList.Name = nameTextBox.Text;
-                int index = sharpLists.IndexOf(currentSharpList);
+                int index = _manager.GetSharpLists().IndexOf(currentSharpList);
 
                 sharpListList.ItemsSource = null;
-                sharpListList.ItemsSource = sharpLists;
+                sharpListList.ItemsSource = _manager.GetSharpLists();
                 sharpListList.SelectedIndex = index;
             }
             else
             {
-                MessageBox.Show(this, "Name length must be under 30 !");
+                ErrorBox errorBox = new ErrorBox("Name length must be between 1 and 30 !");
+                errorBox.ShowDialog();
             }
-        }
-
-        private void persist()
-        {
-            data = new XmlDocument();
-            XmlDeclaration xmlDeclaration = data.CreateXmlDeclaration("1.0", "utf-8", null);
-
-            XmlElement rootNode = data.CreateElement("Lists");
-            data.InsertBefore(xmlDeclaration, data.DocumentElement);
-
-            for (int i = 0; i < sharpLists.Count; i++)
-            {
-                List sharpList = sharpLists[i];
-                XmlElement xmlSharpList = data.CreateElement("SharpList");
-
-                XmlAttribute xmlSharpListName = data.CreateAttribute("name");
-                xmlSharpListName.Value = sharpList.Name;
-                XmlAttribute xmlSharpListDate = data.CreateAttribute("date");
-                xmlSharpListDate.Value = String.Format("{0:dd/MM/yyyy HH:mm:ss}", sharpList.Date);
-
-                xmlSharpList.SetAttributeNode(xmlSharpListName);
-                xmlSharpList.SetAttributeNode(xmlSharpListDate);
-
-                for (int j = 0; j < sharpList.Items.Count; j++)
-                {
-                    Item item = sharpList.Items[j];
-                    XmlElement xmlItem = data.CreateElement("Item");
-
-                    XmlAttribute xmlItemName = data.CreateAttribute("name");
-                    xmlItemName.Value = item.Name;
-
-                    xmlItem.SetAttributeNode(xmlItemName);
-                    xmlItem.InnerText = item.Checked.ToString();
-
-                    xmlSharpList.AppendChild(xmlItem);
-                }
-
-                rootNode.AppendChild(xmlSharpList);
-            }
-
-            data.AppendChild(rootNode);
-            FileStream fileStream = File.Create(path);
-            data.Save(fileStream);
-            fileStream.Flush();
-            fileStream.Close();
         }
 
         private void addItem(string name)
         {
             if (currentSharpList != null)
             {
-                Item newItem = new Item(name);
+                Business.SharpItem newItem = new Business.SharpItem(name);
 
                 currentSharpList.Items.Add(newItem);
 
@@ -214,7 +108,7 @@ namespace SharpList
             }
         }
 
-        private void deleteItem(Item item)
+        private void deleteItem(Business.SharpItem item)
         {
             if (item != null)
             {
@@ -231,14 +125,14 @@ namespace SharpList
             {
                 DragDropEffects effects;
                 DataObject obj = new DataObject();
-                obj.SetData(typeof(Item), itemsList.SelectedItem as Item);
+                obj.SetData(typeof(Business.SharpItem), itemsList.SelectedItem as Business.SharpItem);
                 effects = DragDrop.DoDragDrop(itemsList, obj, DragDropEffects.Copy | DragDropEffects.Move);
             }
         }
 
         private void SharpListDragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(Item)))
+            if (e.Data.GetDataPresent(typeof(Business.SharpItem)))
             {
                 BitmapImage logo = new BitmapImage();
                 logo.BeginInit();
@@ -255,7 +149,7 @@ namespace SharpList
 
         private void SharpListDragLeave(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(Item)))
+            if (e.Data.GetDataPresent(typeof(Business.SharpItem)))
             {
                 BitmapImage logo = new BitmapImage();
                 logo.BeginInit();
@@ -272,7 +166,7 @@ namespace SharpList
 
         private void SharpListDrop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(Item)))
+            if (e.Data.GetDataPresent(typeof(Business.SharpItem)))
             {
                 BitmapImage logo = new BitmapImage();
                 logo.BeginInit();
@@ -280,7 +174,7 @@ namespace SharpList
                 logo.EndInit();
                 deleteImage.Source = logo;
                 e.Effects = DragDropEffects.Copy;
-                deleteItem(e.Data.GetData(typeof(Item)) as Item);
+                deleteItem(e.Data.GetData(typeof(Business.SharpItem)) as Business.SharpItem);
             }
             else
             {
@@ -305,7 +199,7 @@ namespace SharpList
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            persist();
+            _manager.Persist();
         }
     }
 }

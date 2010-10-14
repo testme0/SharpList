@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Debug\
+C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\obj\x86\Release\
 SharpList
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\SharpList\App.xaml
 31560355004
 
 8744417797
-13-6154560
+13-323216832
 ErrorBox.xaml;DialogBox.xaml;MainWindow.xaml;
 
 False
