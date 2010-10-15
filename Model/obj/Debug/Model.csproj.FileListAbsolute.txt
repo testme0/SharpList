@@ -1,5 +1,0 @@
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Model\bin\Debug\Model.dll
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Model\bin\Debug\Model.pdb
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Model\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Model\obj\Debug\Model.dll
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Model\obj\Debug\Model.pdb
