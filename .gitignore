@@ -1,0 +1,10 @@
+*.sln
+*.suo
+*.csproj
+Business/bin
+Business/obj
+Business/Properties
+SharpList/bin
+SharpList/obj
+SharpList/Properties
+SharpList/Service References
