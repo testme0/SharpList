@@ -1,5 +1,0 @@
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Business\bin\Debug\Business.dll
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Business\bin\Debug\Business.pdb
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Business\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Business\obj\Debug\Business.dll
-C:\Users\Arnaud\Documents\Workspace\VS2010 WPF Projects\SharpList\Business\obj\Debug\Business.pdb
